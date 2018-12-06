@@ -152,11 +152,14 @@ export const createBox = ({
   };
 };
 
-// Computed spacing styles will always be in pixels
+// Computed spacing styles will always be in pixels (unless testing in Jest)
 // https://codepen.io/alexreardon/pen/OZyqXe
 const parse = (raw: string): number => {
+  if (process.env.NODE_ENV === "test" && raw == "")     // maj -- so css-box-model/react-beautiful-dnd
+     return Number(0);                                  // can be used by components that are tested with Enzyme/Jest
+
   const value: string = raw.slice(0, -2);
-  const suffix: string = raw.slice(-2);
+  const suffix: string = raw.slice(-2);  
   invariant(
     suffix === 'px',
     `Expected value to be a pixel value.
